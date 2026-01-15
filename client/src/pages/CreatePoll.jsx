@@ -39,7 +39,7 @@ const CreatePoll = () => {
     }
 
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/Polls`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/polls`, {
         question,
         options: cleanedOptions
       });
