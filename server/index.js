@@ -16,6 +16,7 @@ app.use(express.json()); // Allow reading JSON data sent from React
 // 1. Create a Poll (POST)
 app.post('/api/polls', async (req, res) => {
   try {
+    await connectDB();
     // req.body looks like: { question: "Best color?", options: ["Red", "Blue"] }
     const { question, options } = req.body;
     
@@ -37,6 +38,7 @@ app.post('/api/polls', async (req, res) => {
 // 2. Get a Poll by ID (GET)
 app.get('/api/polls/:id', async (req, res) => {
   try {
+    await connectDB();
     const poll = await Poll.findById(req.params.id);
     res.json(poll);
   } catch (err) {
@@ -47,6 +49,7 @@ app.get('/api/polls/:id', async (req, res) => {
 // 3. Vote on an Option (POST/PATCH)
 app.post('/api/polls/:id/vote', async (req, res) => {
   try {
+    await connectDB();
     const { optionIndex } = req.body; // e.g., index 0 for the first option
     const poll = await Poll.findById(req.params.id);
     
@@ -59,7 +62,19 @@ app.post('/api/polls/:id/vote', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
+const connectDB = async () => {
+  // If already connected, do nothing
+  if (mongoose.connection.readyState >= 1) {
+    return;
+  }
+  // Otherwise, connect
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("✅ New MongoDB Connection Established");
+  } catch (error) {
+    console.error("❌ DB Connection Error:", error);
+  }
+};
 // --- CONNECT TO DB & START ---
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
