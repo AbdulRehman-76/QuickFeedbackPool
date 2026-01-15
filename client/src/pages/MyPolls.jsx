@@ -12,7 +12,7 @@ const MyPolls = () => {
   }, []);
 
   const copyToClipboard = (id) => {
-    const link = `${window.location.origin}/poll/${id}`;
+    const link = `${window.location.origin}/Polls/${id}`;
     navigator.clipboard.writeText(link);
     alert('Link copied to clipboard!');
   };

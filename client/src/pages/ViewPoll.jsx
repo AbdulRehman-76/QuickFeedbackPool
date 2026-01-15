@@ -9,14 +9,14 @@ const ViewPoll = () => {
 
   useEffect(() => {
     // Fetch poll data when page loads
-    axios.get(`${import.meta.env.VITE_API_URL}/api/polls/${id}`)
+    axios.get(`${import.meta.env.VITE_API_URL}/api/Polls/${id}`)
       .then(res => setPoll(res.data))
       .catch(err => console.error(err));
   }, [id]);
 
   const handleVote = async (index) => {
     try {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/polls/${id}/vote`, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/Polls/${id}/vote`, {
         optionIndex: index
       });
     //   const res = await axios.post(`http://localhost:5000/api/polls/${id}/vote`, {
